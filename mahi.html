@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Mahi, With Love from Annu ❤️</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
+            --accent-color: #d63384;
+            --text-dark: #4a4a4a;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            height: 100vh;
+            overflow: hidden; /* Prevents scrolling between "pages" */
+        }
+
+        /* --- Background Animation --- */
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.5);
+            animation: float 8s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) scale(0); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        /* --- Navigation & Structure --- */
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s ease-in-out;
+            z-index: 10;
+        }
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .content-card {
+            background: var(--glass);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* --- Components --- */
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.4);
+        }
+
+        /* --- Music Toggle --- */
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- Page 2: Countdown --- */
+        .timer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .time-box {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        /* --- Page 3: Love Letter --- */
+        .letter-scroll {
+            max-height: 50vh;
+            overflow-y: auto;
+            text-align: left;
+            padding-right: 15px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .letter-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .letter-scroll::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 10px;
+        }
+
+        /* --- Page 4: Gallery --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .img-card {
+            height: 180px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .img-card:hover img {
+            transform: scale(1.1);
+        }
+
+        /* --- Page 5: Promise --- */
+        .promise-list {
+            text-align: left;
+            list-style: none;
+        }
+
+        .promise-list li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .promise-list i {
+            color: var(--accent-color);
+        }
+
+        .final-heart {
+            font-size: 4rem;
+            color: var(--accent-color);
+            animation: heartbeat 1.5s infinite;
+            margin-top: 20px;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .timer-container { grid-template-columns: repeat(2, 1fr); }
+            .content-card { padding: 25px; }
+            h1 { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Music -->
+    <div class="music-toggle" onclick="toggleMusic()">
+        <i id="music-icon" class="fas fa-music"></i>
+        <!-- Update the URL below to your favorite romantic MP3 -->
+        <audio id="bg-music" loop>
+            <source src="\Users\anurag\OneDrive\ReelAudio-15349.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <div class="heart-bg" id="heart-bg"></div>
+
+    <!-- PAGE 1: Welcome -->
+    <section id="page1" class="page active">
+        <div class="content-card">
+            <h1 class="reveal">Happy 2nd Anniversary, Mahi ❤️</h1>
+            <p>Two years of laughter, two years of growth, and a lifetime more to go. You are the most beautiful part of my journey.</p>
+            <button class="btn" onclick="nextPage(2)">Start Our Journey ❤️</button>
+        </div>
+    </section>
+
+    <!-- PAGE 2: Our Time -->
+    <section id="page2" class="page">
+        <div class="content-card">
+            <h2>Our Time Together</h2>
+            <p>Every second with you is a blessing. Here is how long we've shared our hearts:</p>
+            <div class="timer-container">
+                <div class="time-box"><span id="days">00</span>Days</div>
+                <div class="time-box"><span id="hours">00</span>Hours</div>
+                <div class="time-box"><span id="mins">00</span>Mins</div>
+                <div class="time-box"><span id="secs">00</span>Secs</div>
+            </div>
+            <div style="margin-top: 30px;">
+                <button class="btn" onclick="nextPage(3)">Next ❤️</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 3: Love Letter -->
+    <section id="page3" class="page">
+        <div class="content-card">
+            <h2>From Annu's Heart...</h2>
+            <div class="letter-scroll">
+                <p>Dearest Mahi,</p>
+                <p>Today, as we celebrate 730 days of being together, I find myself looking back at every moment we've shared. From the nervous first days to the comfortable silence we share now, every bit of it has been a dream.</p>
+                <p>Thank you for being my strength when I was weak, and for being the light in my darkest hours. We’ve faced struggles, we’ve grown, and we’ve learned that love isn’t just about the good times—it’s about holding hands through the storms.</p>
+                <p>You aren't just my girlfriend; you are my best friend and my home. I promise to keep making you laugh, to listen to your stories even at 2 AM, and to love you more with every passing heartbeat.</p>
+                <p>Forever Yours,<br><strong>Annu</strong></p>
+            </div>
+            <div style="margin-top: 20px;">
+                <button class="btn" onclick="nextPage(4)">See Our Memories 📸</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 4: Gallery -->
+    <section id="page4" class="page">
+        <div class="content-card">
+            <h2>Our Memories</h2>
+            <p>Every memory with you, Mahi, lives forever in my heart ❤️</p>
+            <div class="gallery-grid">
+                <!-- Replace 'src' with your actual photo URLs -->
+                <div class="img-card"><img src="/Users/anurag/OneDrive/Pictures/Documents/Snapchat-992978674.jpg" alt="Memory"></div>
+                <div class="img-card"><img src="C:\Users\anurag\OneDrive\Pictures\Snapchat\Snapchat-146913480.jpg" alt="Memory"></div>
+                <div class="img-card"><img src="C:\Users\anurag\OneDrive\Pictures\Camera\IMG20250919162339.jpg" alt="Memory"></div>
+                <div class="img-card"><img src="C:\Users\anurag\OneDrive\Pictures\Camera\IMG20250604180726.jpg" alt="Memory"></div>
+            </div>
+            <div style="margin-top: 20px;">
+                <button class="btn" onclick="nextPage(5)">My Promise 💍</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 5: Promise -->
+    <section id="page5" class="page">
+        <div class="content-card">
+            <h2>My Promises to You</h2>
+            <ul class="promise-list">
+                <li><i class="fas fa-check-circle"></i> I promise to always choose you, every single day.</li>
+                <li><i class="fas fa-check-circle"></i> I promise to support your wildest dreams.</li>
+                <li><i class="fas fa-check-circle"></i> I promise to be your loyal partner and your biggest fan.</li>
+                <li><i class="fas fa-check-circle"></i> I promise a future filled with love, travel, and joy.</li>
+            </ul>
+            <div class="final-heart"><i class="fas fa-heart"></i></div>
+            <p style="font-size: 1.4rem; font-weight: 600; margin-top: 10px;">Mahi, I choose you today, tomorrow, and forever ❤️</p>
+            <button class="btn" onclick="nextPage(1)" style="background: #4a4a4a;">Back to Start</button>
+        </div>
+    </section>
+
+    <script>
+        // --- Navigation Logic ---
+        function nextPage(pageNumber) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+            });
+            // Show the target page
+            document.getElementById('page' + pageNumber).classList.add('active');
+
+            // Play music on first button click (Browser Policy)
+            if(pageNumber === 2) {
+                const audio = document.getElementById('bg-music');
+                if(audio.paused) {
+                    toggleMusic();
+                }
+            }
+        }
+
+        // --- Background Hearts Animation ---
+        function createHeart() {
+            const container = document.getElementById('heart-bg');
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            heart.style.animationDuration = Math.random() * 3 + 5 + 's';
+            container.appendChild(heart);
+
+            setTimeout(() => { heart.remove(); }, 8000);
+        }
+        setInterval(createHeart, 400);
+
+        // --- Countdown Timer ---
+        const anniversaryDate = new Date("December 27, 2025 00:00:00").getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = anniversaryDate - now;
+
+            // Since it's Dec 27 today in the prompt context, we handle both countdown and "Happy Anniversary" state
+            if (distance < 0 && distance > -86400000) { // If it's the actual day
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("mins").innerHTML = "00";
+                document.getElementById("secs").innerHTML = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("mins").innerHTML = minutes;
+            document.getElementById("secs").innerHTML = seconds;
+        }, 1000);
+
+        // --- Music Toggle ---
+        function toggleMusic() {
+            const audio = document.getElementById('bg-music');
+            const icon = document.getElementById('music-icon');
+            if (audio.paused) {
+                audio.play();
+                icon.classList.remove('fa-music');
+                icon.classList.add('fa-pause');
+            } else {
+                audio.pause();
+                icon.classList.remove('fa-pause');
+                icon.classList.add('fa-music');
+            }
+        }
+    </script>
+</body>
+</html>
